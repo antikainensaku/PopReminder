@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "352702110083",
+    "project_id": "reminderapp-d91b7",
+    "storage_bucket": "reminderapp-d91b7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:352702110083:android:512ecb4063dbfb1d537eb6",
+        "android_client_info": {
+          "package_name": "com.antisoftware.popreminder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "352702110083-bdo1tuh2vjcjc7s7bcl9he4cipvelrin.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQ2H_h52DCYFy4fs0a6dGZlfdNyia545M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "352702110083-bdo1tuh2vjcjc7s7bcl9he4cipvelrin.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
