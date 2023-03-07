@@ -2,7 +2,6 @@ package com.antisoftware.popreminder
 
 import android.content.res.Resources
 import androidx.compose.material.ScaffoldState
-import androidx.compose.runtime.*
 import androidx.navigation.NavHostController
 import com.antisoftware.popreminder.common.snackbar.SnackbarManager
 import com.antisoftware.popreminder.common.snackbar.SnackbarMessage.Companion.toMessage
@@ -25,6 +24,7 @@ class PopReminderAppState(
             }
         }
     }
+
     fun popUp() {
         navController.popBackStack()
     }

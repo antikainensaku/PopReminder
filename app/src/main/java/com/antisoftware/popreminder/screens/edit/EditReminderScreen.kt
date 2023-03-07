@@ -1,6 +1,5 @@
 package com.antisoftware.popreminder.screens.edit
 
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -18,7 +17,6 @@ import com.antisoftware.popreminder.common.extension.card
 import com.antisoftware.popreminder.common.extension.fieldModifier
 import com.antisoftware.popreminder.common.extension.spacer
 import com.antisoftware.popreminder.common.extension.toolbarActions
-import com.antisoftware.popreminder.common.speechtotext.SpeechToText
 import com.antisoftware.popreminder.data.Reminder
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
@@ -28,14 +26,11 @@ import com.google.android.material.timepicker.TimeFormat
 @ExperimentalMaterialApi
 fun EditReminderScreen(
     popUpScreen: () -> Unit,
-
     reminderId: String,
     modifier: Modifier = Modifier,
     viewModel: EditReminderViewModel = hiltViewModel()
 ) {
     val reminder by viewModel.reminder
-    val speech = SpeechToText()
-    val context = LocalContext.current
 
     LaunchedEffect(Unit) { viewModel.initialize(reminderId) }
 

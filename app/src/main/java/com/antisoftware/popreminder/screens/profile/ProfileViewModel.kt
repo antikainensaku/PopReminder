@@ -33,6 +33,10 @@ class ProfileViewModel @Inject constructor(
     fun onSignUpClick(openScreen: (String) -> Unit) = openScreen(SIGN_UP_SCREEN)
     */
 
+    fun onNotificationClick() {
+
+    }
+
     fun onSignOutClick(restartApp: (String) -> Unit) {
         launchCatching {
             accountService.signOut()

@@ -8,16 +8,17 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.antisoftware.popreminder.R.drawable as AppIcon
-import com.antisoftware.popreminder.R.string as AppText
 import com.antisoftware.popreminder.common.composable.ActionToolbar
 import com.antisoftware.popreminder.common.extension.smallSpacer
 import com.antisoftware.popreminder.common.extension.toolbarActions
+import com.antisoftware.popreminder.R.drawable as AppIcon
+import com.antisoftware.popreminder.R.string as AppText
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -42,12 +43,16 @@ fun RemindersScreen(
     ) {
         val reminders = viewModel.reminders.collectAsStateWithLifecycle(emptyList())
         val options by viewModel.options
-
-        Column(modifier = Modifier.fillMaxWidth().fillMaxHeight()) {
+        var showAll by rememberSaveable { mutableStateOf(false) }
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight()) {
             ActionToolbar(
                 title = AppText.reminders,
                 modifier = Modifier.toolbarActions(),
                 endActionIcon = AppIcon.ic_user,
+                checked = showAll,
+                onCheckChange = { showAll = showAll.not() },
                 endAction = { viewModel.onProfileClick(openScreen) }
             )
 
@@ -58,6 +63,7 @@ fun RemindersScreen(
                     ReminderItem(
                         reminder = reminderItem,
                         options = options,
+                        showAll = showAll,
                         onCheckChange = { viewModel.onReminderCheckChange(reminderItem) },
                         onActionClick = { action -> viewModel.onReminderActionClick(openScreen, reminderItem, action) }
                     )
