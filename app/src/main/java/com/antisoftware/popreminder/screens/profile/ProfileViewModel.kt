@@ -15,9 +15,6 @@ class ProfileViewModel @Inject constructor(
     private val accountService: AccountService,
     private val storageService: StorageService
 ) : PopReminderViewModel(logService) {
-    val uiState = accountService.currentUser.map {
-        ProfileUiState(it.isAnonymous)
-    }
 
     fun getEmail() : String {
         return accountService.getUserEmail()
@@ -25,16 +22,6 @@ class ProfileViewModel @Inject constructor(
 
     fun getName() : String {
         return accountService.getName()
-    }
-
-    /* TO-DO: disabled since anonymous login disabled
-    fun onLoginClick(openScreen: (String) -> Unit) = openScreen(LOGIN_SCREEN)
-
-    fun onSignUpClick(openScreen: (String) -> Unit) = openScreen(SIGN_UP_SCREEN)
-    */
-
-    fun onNotificationClick() {
-
     }
 
     fun onSignOutClick(restartApp: (String) -> Unit) {

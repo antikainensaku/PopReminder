@@ -25,7 +25,7 @@ fun ReminderItem(
     onCheckChange: () -> Unit,
     onActionClick: (String) -> Unit
 ) {
-    if (reminder.dueMillis < System.currentTimeMillis() || showAll) {
+    if (reminder.dueDateGone || showAll) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth(),

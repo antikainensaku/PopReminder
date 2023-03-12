@@ -27,10 +27,6 @@ fun ProfileScreen(
     modifier: Modifier = Modifier,
     viewModel: ProfileViewModel = hiltViewModel()
 ) {
-    val uiState by viewModel.uiState.collectAsState(
-        initial = ProfileUiState(false)
-    )
-
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -48,24 +44,6 @@ fun ProfileScreen(
         Spacer(modifier = Modifier.largeSpacer())
         SignOutCard { viewModel.onSignOutClick(restartApp) }
         DeleteMyAccountCard { viewModel.onDeleteMyAccountClick(restartApp) }
-
-        /* ***Anonymous Account disabled atm
-        if (uiState.isAnonymousAccount) {
-            RegularCardEditor(AppText.sign_in, AppIcon.ic_user, "", Modifier.card()) {
-                viewModel.onLoginClick(openScreen)
-            }
-
-            RegularCardEditor(AppText.create_account, AppIcon.ic_create_account, "", Modifier.card()) {
-                viewModel.onSignUpClick(openScreen)
-            }
-        } else {
-            RoundImage(imageId = AppIcon.guy_profilepic, modifier = Modifier.profileImage())
-            CardDisplay(title = "Name", viewModel.getName())
-            CardDisplay(title = "Email", viewModel.uiState.)
-            Spacer(modifier = Modifier.largeSpacer())
-            SignOutCard { viewModel.onSignOutClick(restartApp) }
-            DeleteMyAccountCard { viewModel.onDeleteMyAccountClick(restartApp) }
-        }*/
     }
 }
 

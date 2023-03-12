@@ -1,5 +1,6 @@
 package com.antisoftware.popreminder
 
+import android.content.Context
 import android.content.res.Resources
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
@@ -8,29 +9,33 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import androidx.work.WorkManager
 import com.antisoftware.popreminder.theme.PopReminderTheme
 import com.antisoftware.popreminder.common.snackbar.SnackbarManager
+import com.antisoftware.popreminder.common.workmanager.Notifications
+import com.antisoftware.popreminder.data.Reminder
 import com.antisoftware.popreminder.screens.edit.EditReminderScreen
 import com.antisoftware.popreminder.screens.login.LoginScreen
+import com.antisoftware.popreminder.screens.map.MapScreen
 import com.antisoftware.popreminder.screens.profile.ProfileScreen
 import com.antisoftware.popreminder.screens.reminders.RemindersScreen
 import com.antisoftware.popreminder.screens.sign_up.SignUpScreen
 import com.antisoftware.popreminder.screens.splash.SplashScreen
 import com.antisoftware.popreminder.screens.welcome.WelcomeScreen
+import com.google.android.gms.maps.GoogleMap
 import kotlinx.coroutines.CoroutineScope
 
 
 @Composable
 @ExperimentalMaterialApi
 fun PopReminderApp() {
-    PopReminderTheme() {
+    PopReminderTheme {
         Surface(color = MaterialTheme.colors.background) {
             val appState = rememberAppState()
 
@@ -117,13 +122,20 @@ fun NavGraphBuilder.popReminderGraph(appState: PopReminderAppState) {
         )
     }
 
+    composable(MAP_SCREEN) {
+            MapScreen(
+                popUpScreen = { appState.popUp() }
+            )
+        }
+
     composable(
         route = "$EDIT_REMINDER_SCREEN$REMINDER_ID_ARG",
         arguments = listOf(navArgument(REMINDER_ID) { defaultValue = REMINDER_DEFAULT_ID })
     ) {
         EditReminderScreen(
+            reminderId = it.arguments?.getString(REMINDER_ID) ?: REMINDER_DEFAULT_ID,
             popUpScreen = { appState.popUp() },
-            reminderId = it.arguments?.getString(REMINDER_ID) ?: REMINDER_DEFAULT_ID
+            openScreen = { route -> appState.navigate(route) }
         )
     }
 }

@@ -42,8 +42,19 @@ fun RemindersScreen(
         }
     ) {
         val reminders = viewModel.reminders.collectAsStateWithLifecycle(emptyList())
+        // in case notification hasn't happened and dueDate has passed
+        if (reminders.value.size > 1) {
+            for (i in 0..reminders.value.size - 1) {
+                if (!reminders.value[i].dueDateGone && reminders.value[i].dueMillis <= System.currentTimeMillis()) {
+                    viewModel.updateDueDateGone(reminders.value[i])
+                }
+            }
+        }
         val options by viewModel.options
         var showAll by rememberSaveable { mutableStateOf(false) }
+        var show by rememberSaveable {
+            mutableStateOf(false)
+        }
         Column(modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()) {
@@ -60,6 +71,7 @@ fun RemindersScreen(
 
             LazyColumn {
                 items(reminders.value, key = { it.id }) { reminderItem ->
+                    if (reminderItem.dueDateGone) { show = true }
                     ReminderItem(
                         reminder = reminderItem,
                         options = options,
@@ -67,6 +79,7 @@ fun RemindersScreen(
                         onCheckChange = { viewModel.onReminderCheckChange(reminderItem) },
                         onActionClick = { action -> viewModel.onReminderActionClick(openScreen, reminderItem, action) }
                     )
+                    show = false
                 }
             }
         }

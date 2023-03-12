@@ -7,6 +7,7 @@ const val LOGIN_SCREEN = "LoginScreen"
 const val SIGN_UP_SCREEN = "SignUpScreen"
 const val REMINDER_SCREEN = "ReminderScreen"
 const val EDIT_REMINDER_SCREEN = "EditReminderScreen"
+const val MAP_SCREEN = "MapScreen"
 
 const val REMINDER_ID = "reminderId"
 const val REMINDER_DEFAULT_ID = "-1"
