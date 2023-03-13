@@ -1,7 +1,6 @@
 package com.antisoftware.popreminder.data.firebase.implementation
 
 import com.antisoftware.popreminder.data.Reminder
-import com.antisoftware.popreminder.data.User
 import com.antisoftware.popreminder.data.firebase.AccountService
 import com.antisoftware.popreminder.data.firebase.StorageService
 import com.antisoftware.popreminder.data.firebase.trace
@@ -24,6 +23,7 @@ class StorageServiceImpl
 constructor(private val firestore: FirebaseFirestore, private val auth: AccountService) :
     StorageService {
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     override val reminders: Flow<List<Reminder>>
         get() =
             auth.currentUser.flatMapLatest { user ->

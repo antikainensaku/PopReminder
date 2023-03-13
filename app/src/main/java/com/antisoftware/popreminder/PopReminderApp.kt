@@ -14,11 +14,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import androidx.work.WorkManager
 import com.antisoftware.popreminder.theme.PopReminderTheme
 import com.antisoftware.popreminder.common.snackbar.SnackbarManager
 import com.antisoftware.popreminder.screens.edit.EditReminderScreen
 import com.antisoftware.popreminder.screens.login.LoginScreen
+import com.antisoftware.popreminder.screens.maps.MapScreen
 import com.antisoftware.popreminder.screens.profile.ProfileScreen
 import com.antisoftware.popreminder.screens.reminders.RemindersScreen
 import com.antisoftware.popreminder.screens.sign_up.SignUpScreen
@@ -116,6 +116,10 @@ fun NavGraphBuilder.popReminderGraph(appState: PopReminderAppState) {
             openScreen = { route -> appState.navigate(route) }
         )
     }
+    
+    composable(MAP_SCREEN) {
+        MapScreen(popUpScreen = { appState.popUp() })
+    }
 
     composable(
         route = "$EDIT_REMINDER_SCREEN$REMINDER_ID_ARG",
@@ -123,6 +127,7 @@ fun NavGraphBuilder.popReminderGraph(appState: PopReminderAppState) {
     ) {
         EditReminderScreen(
             popUpScreen = { appState.popUp() },
+            openScreen = { route -> appState.navigate(route) },
             reminderId = it.arguments?.getString(REMINDER_ID) ?: REMINDER_DEFAULT_ID
         )
     }

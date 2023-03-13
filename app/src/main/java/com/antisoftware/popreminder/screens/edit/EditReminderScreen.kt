@@ -13,10 +13,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.antisoftware.popreminder.R.drawable as AppIcon
 import com.antisoftware.popreminder.R.string as AppText
 import com.antisoftware.popreminder.common.composable.*
-import com.antisoftware.popreminder.common.extension.card
-import com.antisoftware.popreminder.common.extension.fieldModifier
-import com.antisoftware.popreminder.common.extension.spacer
-import com.antisoftware.popreminder.common.extension.toolbarActions
+import com.antisoftware.popreminder.common.extension.*
 import com.antisoftware.popreminder.data.Reminder
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
@@ -26,9 +23,10 @@ import com.google.android.material.timepicker.TimeFormat
 @ExperimentalMaterialApi
 fun EditReminderScreen(
     popUpScreen: () -> Unit,
+    openScreen: (String) -> Unit,
     reminderId: String,
     modifier: Modifier = Modifier,
-    viewModel: EditReminderViewModel = hiltViewModel()
+    viewModel: EditReminderViewModel = hiltViewModel(),
 ) {
     val reminder by viewModel.reminder
 
@@ -58,6 +56,9 @@ fun EditReminderScreen(
         CardEditors(reminder, viewModel::onDateChange, viewModel::onTimeChange)
 
         Spacer(modifier = Modifier.spacer())
+        BasicButton(text = AppText.location, modifier = Modifier.basicButton()) {
+            viewModel.onMapsClick(openScreen)
+        }
     }
 }
 

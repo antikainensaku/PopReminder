@@ -1,8 +1,11 @@
 package com.antisoftware.popreminder.screens.edit
 
+import android.location.Location
+import android.location.LocationManager
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import com.antisoftware.popreminder.MAP_SCREEN
 import com.antisoftware.popreminder.REMINDER_DEFAULT_ID
 import com.antisoftware.popreminder.common.extension.idFromParameter
 import com.antisoftware.popreminder.common.snackbar.SnackbarManager
@@ -12,6 +15,8 @@ import com.antisoftware.popreminder.data.Reminder
 import com.antisoftware.popreminder.data.firebase.LogService
 import com.antisoftware.popreminder.data.firebase.StorageService
 import com.antisoftware.popreminder.screens.PopReminderViewModel
+import com.antisoftware.popreminder.screens.maps.MapUiState
+import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.text.SimpleDateFormat
 import java.time.Duration
@@ -31,10 +36,18 @@ class EditReminderViewModel @Inject constructor(
         launchCatching {
             if (reminderId != REMINDER_DEFAULT_ID) {
                 reminder.value = storageService.getReminder(reminderId.idFromParameter()) ?: Reminder()
+                MapUiState.reminderSpot = LatLng(reminder.value.location_y.toDouble(), reminder.value.location_x.toDouble())
             }
         }
     }
 
+    fun getDistance(currentLoc: Location): Float {
+        val distance: Float = currentLoc.distanceTo(Location(LocationManager.GPS_PROVIDER).apply {
+            MapUiState.reminderSpot.latitude
+            MapUiState.reminderSpot.longitude
+        })
+        return distance
+    }
     fun onTitleChange(newValue: String) {
         reminder.value = reminder.value.copy(msg = newValue)
     }
@@ -68,7 +81,9 @@ class EditReminderViewModel @Inject constructor(
             } else {
                 storageService.update(editedTask)
             }
-            setNotification()
+            if (!editedTask.dueDate.isBlank()) {
+                setNotification()
+            }
             popUpScreen()
         }
     }
@@ -117,14 +132,27 @@ class EditReminderViewModel @Inject constructor(
         }
         val dueMillis = reminder.value.dueDateInMillis + reminder.value.dueTimeInMillis
         reminder.value = reminder.value.copy(dueMillis = dueMillis)
+        if (MapUiState.reminderSpot != LatLng(0.0,0.0)) {
+            reminder.value = reminder.value.copy(
+                location_y = MapUiState.reminderSpot.latitude.toString(),
+                location_x = MapUiState.reminderSpot.longitude.toString()
+            )
+            resetMapUiState()
+        }
     }
 
-        private fun Int.toClockPattern(): String {
-            return if (this < 10) "0$this" else "$this"
+    private fun Int.toClockPattern(): String {
+        return if (this < 10) "0$this" else "$this"
     }
 
-
+    private fun resetMapUiState() {
+        MapUiState.reminderSpot = LatLng(0.0,0.0)
+    }
     companion object {
         private const val DATE_FORMAT = "EEE, d MMM yyyy"
+    }
+
+    fun onMapsClick(openScreen: (String) -> Unit) {
+        openScreen(MAP_SCREEN)
     }
 }

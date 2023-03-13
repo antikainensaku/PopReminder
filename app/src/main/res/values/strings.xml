@@ -41,6 +41,7 @@
     <string name="time">Time</string>
     <string name="check">Check</string>
     <string name="priority">Priority</string>
+    <string name="location">Press to set a location</string>
 
     <!-- ProfileScreen -->
     <string name="sign_out">Sign out</string>
